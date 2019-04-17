@@ -13,11 +13,15 @@
 #' re = maize_met_analysis(dat,json=F)
 #' re
 #' maize_met_analysis(dat)
+#' data(hch)
+#' head(hch)
+#' maize_met_analysis(hch)
+#' maize_met_analysis(hch,json=F)
 
 
 
 maize_met_analysis = function(dat,json=TRUE){
-  require(rjson)
+  require(jsonlite)
   names(dat) = c("Loc","Rep","Cul","yield")
   dat$Loc.Rep = as.factor(paste0(dat$Loc,dat$Rep))
   dat$Loc.Cul = as.factor(paste0(dat$Loc,dat$Cul))
@@ -29,28 +33,54 @@ maize_met_analysis = function(dat,json=TRUE){
   mean = mean(dat$yield,na.rm=TRUE)
   cv = round(sqrt(mse)*100/mean,4)
 
-  cul_lsd = LSD_test(mod,"Cul")$groups
-  cul_lsd$Name = rownames(cul_lsd)
-  cul_lsd = cul_lsd[,c(3,1,2)]
+  cul_lsd0.05 = LSD_test(mod,"Cul",alpha = 0.05)$groups
+  cul_lsd0.05_Name = rownames(cul_lsd0.05)
+  cul_lsd0.05$Name =  rownames(cul_lsd0.05)
+  cul_lsd0.05 = cul_lsd0.05[,c(3,1,2)]
 
-  loc_lsd = LSD_test(mod,"Loc")$groups
-  loc_lsd$Name = rownames(loc_lsd)
-  loc_lsd = loc_lsd[,c(3,1,2)]
+  cul_lsd0.01 = LSD_test(mod,"Cul",alpha = 0.01)$groups
+  cul_lsd0.01_Name = rownames(cul_lsd0.01)
+  cul_lsd0.01$Name =  rownames(cul_lsd0.01)
+  cul_lsd0.01 = cul_lsd0.01[,c(3,1,2)]
 
-  loc.cul_lsd = LSD_test(mod,"Loc.Cul")$groups
-  loc.cul_lsd$Name = rownames(loc.cul_lsd)
-  loc.cul_lsd = loc.cul_lsd[,c(3,1,2)]
+  cul_lsd_value0.05 = LSD_value(mod,"Cul",alpha = 0.05);cul_lsd_value0.01 = LSD_value(mod,"Cul",alpha = 0.01)
+
+  loc_lsd0.05 = LSD_test(mod,"Loc",alpha=0.05)$groups
+  loc_lsd0.05_Name = rownames(loc_lsd0.05)
+  loc_lsd0.05$Name = rownames(loc_lsd0.05)
+  loc_lsd0.05 = loc_lsd0.05[,c(3,1,2)]
+
+  loc_lsd0.01 = LSD_test(mod,"Loc",alpha=0.01)$groups
+  loc_lsd0.01_Name = rownames(loc_lsd0.01)
+  loc_lsd0.01$Name = rownames(loc_lsd0.01)
+  loc_lsd0.01 = loc_lsd0.01[,c(3,1,2)]
+
+  loc_lsd_value0.05 = LSD_value(mod,"Loc",alpha = 0.05);loc_lsd_value0.01 = LSD_value(mod,"Loc",alpha = 0.01)
+
+  loc.cul_lsd0.05 = LSD_test(mod,"Loc.Cul",alpha = 0.05)$groups
+  loc.cul_lsd0.05_Name = rownames(loc.cul_lsd0.05)
+  loc.cul_lsd0.05$Name = rownames(loc.cul_lsd0.05)
+  loc.cul_lsd0.05 = loc.cul_lsd0.05[,c(3,1,2)]
+
+  loc.cul_lsd0.01 = LSD_test(mod,"Loc.Cul",alpha = 0.01)$groups
+  loc.cul_lsd0.01_Name = rownames(loc.cul_lsd0.01)
+  loc.cul_lsd0.01$Name = rownames(loc.cul_lsd0.01)
+  loc.cul_lsd0.01 = loc.cul_lsd0.01[,c(3,1,2)]
+
+  loc.cul_lsd_value0.05 = LSD_value(mod,"Loc.Cul",alpha = 0.05);loc.cul_lsd_value0.01 = LSD_value(mod,"Loc.Cul",alpha = 0.01)
+
+  re = c(aa,cul_lsd0.05,cul_lsd0.01,cul_lsd_value0.05,cul_lsd_value0.01,
+         loc_lsd0.05,loc_lsd0.01,loc_lsd_value0.05,loc_lsd_value0.01,
+         loc.cul_lsd0.05,loc.cul_lsd0.01,loc.cul_lsd_value0.05,loc.cul_lsd_value0.01,
+         cv)
+
   if(json){
-    aa1 = toJSON(aa)
-    cul_lsd1 = toJSON(cul_lsd)
-    loc_lsd1 = toJSON(loc_lsd)
-    loc.cul_lsd1 = toJSON(loc.cul_lsd)
-    cv1 = toJSON(cv)
-    re = c(aa1,cul_lsd1,loc_lsd1,loc.cul_lsd1,cv1)
-    names(re) = c("anova","cul_lsd","loc_lsd","loc.cul_lsd","cv")
+    re = lapply(re, toJSON)
   }else{
-    re = c(aa,cul_lsd,loc_lsd,loc.cul_lsd,cv)
-    names(re) = c("anova","cul_lsd","loc_lsd","loc.cul_lsd","cv")
+    re = list(aa,cul_lsd0.05,cul_lsd0.01,cul_lsd_value0.05,cul_lsd_value0.01,
+           loc_lsd0.05,loc_lsd0.01,loc_lsd_value0.05,loc_lsd_value0.01,
+           loc.cul_lsd0.05,loc.cul_lsd0.01,loc.cul_lsd_value0.05,loc.cul_lsd_value0.01,
+           cv)
   }
   return(re)
 }

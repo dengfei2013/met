@@ -7,14 +7,19 @@
 #' @examples
 #' library(met)
 #' data(maize)
+#' data(hch)
+#' head(hch)
+#' names(hch) = c("Loc","Rep","Cul","yield")
 #' mod = aov(yield ~Loc/Rep + Loc*Cul,data=maize)
+#' mod = aov(yield ~Loc/Rep + Loc*Cul,data=hch)
+#' summary(mod)
 #' LSD_test(mod,"Loc")$groups
-#' print(LSD_test(mod,"Loc")$`statistics`[4])
+#' LSD_value(mod,"Loc",alpha=0.05)
+#' LSD_value(mod,"Loc",alpha=0.01)
 
-
-LSD_test = function (y, trt, DFerror, MSerror, alpha = 0.05, p.adj = c("none",
-                                                            "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr"),
-          group = TRUE, main = NULL, console = FALSE){
+LSD_value = function (y, trt, DFerror, MSerror, alpha = 0.05, p.adj = c("none",
+                                                                       "holm", "hommel", "hochberg", "bonferroni", "BH", "BY", "fdr"),
+                     group = TRUE, main = NULL, console = FALSE){
   p.adj <- match.arg(p.adj)
   clase <- c("aov", "lm")
   name.y <- paste(deparse(substitute(y)))
@@ -63,6 +68,7 @@ LSD_test = function (y, trt, DFerror, MSerror, alpha = 0.05, p.adj = c("none",
   Tprob <- qt(1 - alpha/2, DFerror)
   LCL <- means[, 2] - Tprob * std.err
   UCL <- means[, 2] + Tprob * std.err
+  # LSD <- Tprob * sqrt(2 * MSerror/nr)
   means <- data.frame(means, std = sds[, 2], r = nn[, 2], LCL,
                       UCL, medians)
   names(means)[1:2] <- c(name.t, name.y)
@@ -116,7 +122,7 @@ LSD_test = function (y, trt, DFerror, MSerror, alpha = 0.05, p.adj = c("none",
   if (length(nr) == 1 & p.adj != "none")
     statistics <- data.frame(statistics, t.value = Tprob,
                              MSD = LSD)
-  LSD = " "
+  # LSD = " "
   comb <- utils::combn(ntr, 2)
   nn <- ncol(comb)
   dif <- rep(0, nn)
@@ -148,6 +154,7 @@ LSD_test = function (y, trt, DFerror, MSerror, alpha = 0.05, p.adj = c("none",
   tr.j <- means[comb[2, ], 1]
   LCL <- dif - Tprob * sdtdif
   UCL <- dif + Tprob * sdtdif
+  LSD = Tprob * sdtdif
   comparison <- data.frame(difference = dif, pvalue = pvalue,
                            signif. = sig, LCL, UCL)
   if (p.adj != "bonferroni" & p.adj != "none") {
@@ -190,5 +197,5 @@ LSD_test = function (y, trt, DFerror, MSerror, alpha = 0.05, p.adj = c("none",
   output <- list(statistics = statistics, parameters = parameters,
                  means = means, comparison = comparison, groups = groups)
   class(output) <- "group"
-  invisible(output)
+  return(LSD[1])
 }
