@@ -21,7 +21,7 @@
 
 
 maize_met_analysis = function(dat,json=TRUE){
-  require(jsonlite)
+  suppressMessages(require(jsonlite))
   names(dat) = c("Loc","Rep","Cul","yield")
   dat$Loc.Rep = as.factor(paste0(dat$Loc,dat$Rep))
   dat$Loc.Cul = as.factor(paste0(dat$Loc,dat$Cul))
