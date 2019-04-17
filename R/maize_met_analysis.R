@@ -17,11 +17,12 @@
 #' head(hch)
 #' maize_met_analysis(hch)
 #' maize_met_analysis(hch,json=F)
+#' tt = maize_met_analysis(hch,json=F)
 
 
 
 maize_met_analysis = function(dat,json=TRUE){
-  suppressMessages(require(jsonlite))
+  suppressMessages(require(rjson))
   names(dat) = c("Loc","Rep","Cul","yield")
   dat$Loc.Rep = as.factor(paste0(dat$Loc,dat$Rep))
   dat$Loc.Cul = as.factor(paste0(dat$Loc,dat$Cul))
