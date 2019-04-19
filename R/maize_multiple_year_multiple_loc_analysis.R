@@ -21,7 +21,7 @@
 
 
 
-maize_met_analysis = function(dat,json=TRUE){
+maize_multiple_year_multiple_loc_analysis = function(dat,json=TRUE){
   suppressMessages(require(jsonlite))
   names(dat) = c("Loc","Rep","Cul","yield")
   dat$Loc.Rep = as.factor(paste0(dat$Loc,dat$Rep))
@@ -79,9 +79,9 @@ maize_met_analysis = function(dat,json=TRUE){
     re = lapply(re, toJSON)
   }else{
     re = list(aa,cul_lsd0.05,cul_lsd0.01,cul_lsd_value0.05,cul_lsd_value0.01,
-           loc_lsd0.05,loc_lsd0.01,loc_lsd_value0.05,loc_lsd_value0.01,
-           loc.cul_lsd0.05,loc.cul_lsd0.01,loc.cul_lsd_value0.05,loc.cul_lsd_value0.01,
-           cv)
+              loc_lsd0.05,loc_lsd0.01,loc_lsd_value0.05,loc_lsd_value0.01,
+              loc.cul_lsd0.05,loc.cul_lsd0.01,loc.cul_lsd_value0.05,loc.cul_lsd_value0.01,
+              cv)
   }
   return(re)
 }
