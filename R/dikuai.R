@@ -6,14 +6,13 @@
 #'
 #' @examples
 #' library(met)
-#' data(years_locs_dat)
-#' dat = years_locs_dat
-#' dd = dat[,c(3,4,2,1,6)]
-#' setDF(dd)
-#' dat = dd
-#'
-#'
-#'
+#' row = 3
+#' col = 90
+#' b_row = 1
+#' b_col = 90
+#' plot_col = 5
+#' dd = dikuai(row,col,b_row,b_col,plot_col)
+#'dd
 dikuai <- function(row,col,b_row,b_col,plot_col){
   cul = paste0("Cul_",1:(row*col/plot_col))
   n_block = (col/b_col)*(row/b_row)

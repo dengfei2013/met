@@ -11,6 +11,8 @@
 #' dd = dat[,c(3,4,2,1,6)]
 #' setDF(dd)
 #' dat = dd
+#' head(dat)
+#' str(dat)
 
 
 
