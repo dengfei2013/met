@@ -69,35 +69,35 @@ maize_multiple_year_multiple_loc_analysis = function(dat,json=TRUE){
 
   year_lsd_value0.05 = LSD_value(mod,"Year",alpha = 0.05);year_lsd_value0.01 = LSD_value(mod,"Year",alpha = 0.01)
 
-  loc.cul_lsd0.05 = LSD_test(mod,"Loc.Cul",alpha = 0.05)$groups
-  loc.cul_lsd0.05_Name = rownames(loc.cul_lsd0.05)
-  loc.cul_lsd0.05$Name = rownames(loc.cul_lsd0.05)
-  loc.cul_lsd0.05 = loc.cul_lsd0.05[,c(3,1,2)]
-
-  loc.cul_lsd0.01 = LSD_test(mod,"Loc.Cul",alpha = 0.01)$groups
-  loc.cul_lsd0.01_Name = rownames(loc.cul_lsd0.01)
-  loc.cul_lsd0.01$Name = rownames(loc.cul_lsd0.01)
-  loc.cul_lsd0.01 = loc.cul_lsd0.01[,c(3,1,2)]
-
-  loc.cul_lsd_value0.05 = LSD_value(mod,"Loc.Cul",alpha = 0.05);loc.cul_lsd_value0.01 = LSD_value(mod,"Loc.Cul",alpha = 0.01)
-
-  year.cul_lsd0.05 = LSD_test(mod,"Year.Cul",alpha = 0.05)$groups
-  year.cul_lsd0.05_Name = rownames(year.cul_lsd0.05)
-  year.cul_lsd0.05$Name = rownames(year.cul_lsd0.05)
-  year.cul_lsd0.05 = year.cul_lsd0.05[,c(3,1,2)]
-
-  year.cul_lsd0.01 = LSD_test(mod,"Year.Cul",alpha = 0.01)$groups
-  year.cul_lsd0.01_Name = rownames(year.cul_lsd0.01)
-  year.cul_lsd0.01$Name = rownames(year.cul_lsd0.01)
-  year.cul_lsd0.01 = year.cul_lsd0.01[,c(3,1,2)]
-
-  year.cul_lsd_value0.05 = LSD_value(mod,"Year.Cul",alpha = 0.05);year.cul_lsd_value0.01 = LSD_value(mod,"Year.Cul",alpha = 0.01)
+  # loc.cul_lsd0.05 = LSD_test(mod,"Loc.Cul",alpha = 0.05)$groups
+  # loc.cul_lsd0.05_Name = rownames(loc.cul_lsd0.05)
+  # loc.cul_lsd0.05$Name = rownames(loc.cul_lsd0.05)
+  # loc.cul_lsd0.05 = loc.cul_lsd0.05[,c(3,1,2)]
+  #
+  # loc.cul_lsd0.01 = LSD_test(mod,"Loc.Cul",alpha = 0.01)$groups
+  # loc.cul_lsd0.01_Name = rownames(loc.cul_lsd0.01)
+  # loc.cul_lsd0.01$Name = rownames(loc.cul_lsd0.01)
+  # loc.cul_lsd0.01 = loc.cul_lsd0.01[,c(3,1,2)]
+  #
+  # loc.cul_lsd_value0.05 = LSD_value(mod,"Loc.Cul",alpha = 0.05);loc.cul_lsd_value0.01 = LSD_value(mod,"Loc.Cul",alpha = 0.01)
+  #
+  # year.cul_lsd0.05 = LSD_test(mod,"Year.Cul",alpha = 0.05)$groups
+  # year.cul_lsd0.05_Name = rownames(year.cul_lsd0.05)
+  # year.cul_lsd0.05$Name = rownames(year.cul_lsd0.05)
+  # year.cul_lsd0.05 = year.cul_lsd0.05[,c(3,1,2)]
+  #
+  # year.cul_lsd0.01 = LSD_test(mod,"Year.Cul",alpha = 0.01)$groups
+  # year.cul_lsd0.01_Name = rownames(year.cul_lsd0.01)
+  # year.cul_lsd0.01$Name = rownames(year.cul_lsd0.01)
+  # year.cul_lsd0.01 = year.cul_lsd0.01[,c(3,1,2)]
+  #
+  # year.cul_lsd_value0.05 = LSD_value(mod,"Year.Cul",alpha = 0.05);year.cul_lsd_value0.01 = LSD_value(mod,"Year.Cul",alpha = 0.01)
 
   re = c(aa,cul_lsd0.05,cul_lsd0.01,cul_lsd_value0.05,cul_lsd_value0.01,
          loc_lsd0.05,loc_lsd0.01,loc_lsd_value0.05,loc_lsd_value0.01,
-         loc.cul_lsd0.05,loc.cul_lsd0.01,loc.cul_lsd_value0.05,loc.cul_lsd_value0.01,
          year_lsd0.05,year_lsd0.01,year_lsd_value0.05,year_lsd_value0.01,
-         year.cul_lsd0.05,year.cul_lsd0.01,year.cul_lsd_value0.05,year.cul_lsd_value0.01,
+         # loc.cul_lsd0.05,loc.cul_lsd0.01,loc.cul_lsd_value0.05,loc.cul_lsd_value0.01,
+         # year.cul_lsd0.05,year.cul_lsd0.01,year.cul_lsd_value0.05,year.cul_lsd_value0.01,
          cv)
 
   if(json){
@@ -105,9 +105,9 @@ maize_multiple_year_multiple_loc_analysis = function(dat,json=TRUE){
   }else{
     re = list(aa,cul_lsd0.05,cul_lsd0.01,cul_lsd_value0.05,cul_lsd_value0.01,
               loc_lsd0.05,loc_lsd0.01,loc_lsd_value0.05,loc_lsd_value0.01,
-              loc.cul_lsd0.05,loc.cul_lsd0.01,loc.cul_lsd_value0.05,loc.cul_lsd_value0.01,
               year_lsd0.05,year_lsd0.01,year_lsd_value0.05,year_lsd_value0.01,
-              year.cul_lsd0.05,year.cul_lsd0.01,year.cul_lsd_value0.05,year.cul_lsd_value0.01,
+              # loc.cul_lsd0.05,loc.cul_lsd0.01,loc.cul_lsd_value0.05,loc.cul_lsd_value0.01,
+              # year.cul_lsd0.05,year.cul_lsd0.01,year.cul_lsd_value0.05,year.cul_lsd_value0.01,
               cv)
   }
   return(re)
