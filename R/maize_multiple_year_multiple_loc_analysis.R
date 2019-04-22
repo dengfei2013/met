@@ -6,27 +6,21 @@
 #'
 #' @examples
 #' library(met)
-#' data("maize")
-#' head(maize)
-#' dat = maize
-#' head(dat)
-#' re = maize_met_analysis(dat,json=F)
-#' re
-#' maize_met_analysis(dat)
-#' data(hch)
-#' head(hch)
-#' maize_met_analysis(hch)
-#' maize_met_analysis(hch,json=F)
-#' tt = maize_met_analysis(hch,json=F)
+#' data(years_locs_dat)
+#' dat = years_locs_dat
+#' dd = dat[,c(3,4,2,1,6)]
+#' setDF(dd)
+#' dat = dd
 
 
 
 maize_multiple_year_multiple_loc_analysis = function(dat,json=TRUE){
   suppressMessages(require(jsonlite))
-  names(dat) = c("Loc","Rep","Cul","yield")
-  dat$Loc.Rep = as.factor(paste0(dat$Loc,dat$Rep))
+  names(dat) = c("Year","Loc","Rep","Cul","yield")
+  dat$Year.Loc.Rep = as.factor(paste0(dat$Year,dat$Loc,dat$Rep))
   dat$Loc.Cul = as.factor(paste0(dat$Loc,dat$Cul))
-  mod = aov(yield ~ Loc + Loc.Rep + Cul + Loc.Cul, data = dat)
+  dat$Year.Cul = as.factor(paste0(dat$Year,dat$Cul))
+  mod = aov(yield ~ Year + Loc + Year.Loc.Rep + Cul + Loc.Cul + Year.Cul, data = dat)
   aa = anova_tab(mod)
 
   nn = length(aa[[1]][,3])
